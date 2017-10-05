@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
+import java.lang.Math.*;
 
 
 public class RNThumbnailModule extends ReactContextBaseJavaModule {
@@ -42,7 +43,9 @@ public class RNThumbnailModule extends ReactContextBaseJavaModule {
     filePath = filePath.replace("file://","");
     MediaMetadataRetriever retriever = new MediaMetadataRetriever();
     retriever.setDataSource(filePath);
-    Bitmap image = retriever.getFrameAtTime(1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+    String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+    long timeInMillisec = Long.parseLong(time);
+    Bitmap image = retriever.getFrameAtTime((long)Math.floor(timeInMillisec / 2), MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
 
     String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/thumb";
 
